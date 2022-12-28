@@ -17,10 +17,10 @@ namespace ConcQuiz
 
         public ConcQuestion(string txt, string tcode) : base(txt, tcode) { }
 
-        public override void AddAnswer(Answer a)
-        {
-            //todo: implement the body 
-        }
+        // public override void AddAnswer(Answer a)
+        // {
+        //     //todo: implement the body 
+        // }
     }
 
     public class ConcStudent : Student
@@ -29,25 +29,25 @@ namespace ConcQuiz
 
         public ConcStudent(int num, string name) : base(num, name) { }
 
-        public override void AssignExam(Exam e)
-        {
-            //todo: implement the body
-        }
+        // public override void AssignExam(Exam e)
+        // {
+        //     //todo: implement the body
+        // }
 
-        public override void StartExam()
-        {
-            //todo: implement the body
-        }
+        // public override void StartExam()
+        // {
+        //     //todo: implement the body
+        // }
 
-        public override void Think()
-        {
-            //todo: implement the body
-        }
+        // public override void Think()
+        // {
+        //     //todo: implement the body
+        // }
 
-        public override void ProposeAnswer()
-        {
-            //todo: implement the body
-        }
+        // public override void ProposeAnswer()
+        // {
+        //     //todo: implement the body
+        // }
 
         public override void Log(string logText = "")
         {
@@ -61,22 +61,22 @@ namespace ConcQuiz
 
         public ConcTeacher(string code, string name) : base(code, name) { }
 
-        public override void AssignExam(Exam e)
-        {
-            //todo: implement the body
-        }
-        public override void Think()
-        {
-            //todo: implement the body
-        }
-        public override void ProposeQuestion()
-        {
-            //todo: implement the body
-        }
-        public override void PrepareExam(int maxNumOfQuestions)
-        {
-            //todo: implement the body
-        }
+        // public override void AssignExam(Exam e)
+        // {
+        //     //todo: implement the body
+        // }
+        // public override void Think()
+        // {
+        //     //todo: implement the body
+        // }
+        // public override void ProposeQuestion()
+        // {
+        //     //todo: implement the body
+        // }
+        // public override void PrepareExam(int maxNumOfQuestions)
+        // {
+        //     //todo: implement the body
+        // }
         public override void Log(string logText = "")
         {
             base.Log();
@@ -88,10 +88,10 @@ namespace ConcQuiz
 
         public ConcExam(int number, string name = "") : base(number, name) { }
 
-        public override void AddQuestion(Teacher teacher, string text)
-        {
-            //todo: implement the body
-        }
+        // public override void AddQuestion(Teacher teacher, string text)
+        // {
+        //     //todo: implement the body
+        // }
         public override void Log(string logText = "")
         {
             base.Log();
@@ -110,22 +110,61 @@ namespace ConcQuiz
         public override void SetUp()
         {
             //todo: implement the body
+            var t1 = new Thread(() =>
+            {
+                for (int i = 0; i < FixedParams.maxNumOfStudents; i++)
+                {
+                    System.Console.WriteLine("Creating student");
+                    string std_name = " STUDENT NAME"; //todo: to be generated later
+                    this.Students.AddLast(new Student(i + 1, std_name));
+                }
+            });
+
+            var t2 = new Thread(() =>
+            {
+                for (int i = 0; i < FixedParams.maxNumOfTeachers; i++)
+                {
+                    System.Console.WriteLine("Creating Teacher");
+                    string teacher_name = " TEACHER NAME"; //todo: to be generated later
+                    this.Teachers.AddLast(new Teacher((i + 1).ToString(), teacher_name));
+                }
+            });
+
+            t1.Start();
+            t2.Start();
+
+            // assign exams
+            t1.Join();
+            t2.Join();
+            foreach (Teacher t in this.Teachers)
+                t.AssignExam(this.Exam);
         }
 
         public override void PrepareExam(int maxNumOfQuestion)
         {
             //todo: implement the body
-        }
-        public override void DistributeExam()
-        {
-            //todo: implement the body
-        }
-        public override void StartExams()
-        {
-            //todo: implement the body
+            List<Thread> threads = new List<Thread>();
+            foreach (Teacher t in this.Teachers)
+            {
+                var x = new Thread(() => t.PrepareExam(maxNumOfQuestion));
+                x.Start();
+                threads.Add(x);
+            }
+
+            threads.ForEach(x => x.Join());
         }
 
-        public string GetStatistics()
+        // public override void DistributeExam()
+        // {
+        //     //todo: implement the body
+        // }
+
+        // public override void StartExams()
+        // {
+        //     //todo: implement the body
+        // }
+
+        public new string GetStatistics()
         {
             string result = "", nl = "\n";
             int totalNumOfAnswers = 0;
