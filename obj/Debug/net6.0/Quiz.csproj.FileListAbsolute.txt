@@ -1,0 +1,15 @@
+/Users/joeyvandervalk/Desktop/Quiz_student/bin/Debug/net6.0/Quiz
+/Users/joeyvandervalk/Desktop/Quiz_student/bin/Debug/net6.0/Quiz.deps.json
+/Users/joeyvandervalk/Desktop/Quiz_student/bin/Debug/net6.0/Quiz.runtimeconfig.json
+/Users/joeyvandervalk/Desktop/Quiz_student/bin/Debug/net6.0/Quiz.dll
+/Users/joeyvandervalk/Desktop/Quiz_student/bin/Debug/net6.0/Quiz.pdb
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.csproj.AssemblyReference.cache
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.GeneratedMSBuildEditorConfig.editorconfig
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.AssemblyInfoInputs.cache
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.AssemblyInfo.cs
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.csproj.CoreCompileInputs.cache
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.dll
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/refint/Quiz.dll
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.pdb
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/Quiz.genruntimeconfig.cache
+/Users/joeyvandervalk/Desktop/Quiz_student/obj/Debug/net6.0/ref/Quiz.dll
