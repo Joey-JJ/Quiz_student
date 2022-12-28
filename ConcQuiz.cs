@@ -14,13 +14,18 @@ namespace ConcQuiz
     public class ConcQuestion : Question
     {
         //todo: add required fields, if necessary
+        object lockObj = new object();
 
         public ConcQuestion(string txt, string tcode) : base(txt, tcode) { }
 
-        // public override void AddAnswer(Answer a)
-        // {
-        //     //todo: implement the body 
-        // }
+        public override void AddAnswer(Answer a)
+        {
+            //todo: implement the body 
+            lock (lockObj)
+            {
+                this.Answers.AddLast(a);
+            }
+        }
     }
 
     public class ConcStudent : Student
@@ -159,10 +164,18 @@ namespace ConcQuiz
         //     //todo: implement the body
         // }
 
-        // public override void StartExams()
-        // {
-        //     //todo: implement the body
-        // }
+        public override void StartExams()
+        {
+            //todo: implement the body
+            List<Thread> threads = new List<Thread>();
+            foreach (Student s in this.Students)
+            {
+                var t = new Thread(() => s.StartExam());
+                t.Start();
+                threads.Add(t);
+            }
+            threads.ForEach(x => x.Join());
+        }
 
         public new string GetStatistics()
         {
