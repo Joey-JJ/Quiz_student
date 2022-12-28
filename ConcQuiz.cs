@@ -120,7 +120,7 @@ namespace ConcQuiz
                 for (int i = 0; i < FixedParams.maxNumOfStudents; i++)
                 {
                     System.Console.WriteLine("Creating student");
-                    string std_name = " STUDENT NAME"; //todo: to be generated later
+                    string std_name = $"STUDENT NAME {i}"; //todo: to be generated later
                     this.Students.AddLast(new Student(i + 1, std_name));
                 }
             });
@@ -129,8 +129,7 @@ namespace ConcQuiz
             {
                 for (int i = 0; i < FixedParams.maxNumOfTeachers; i++)
                 {
-                    System.Console.WriteLine("Creating Teacher");
-                    string teacher_name = " TEACHER NAME"; //todo: to be generated later
+                    string teacher_name = $"TEACHER NAME {i}"; //todo: to be generated later
                     this.Teachers.AddLast(new Teacher((i + 1).ToString(), teacher_name));
                 }
             });
