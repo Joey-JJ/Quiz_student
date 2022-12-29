@@ -9,7 +9,7 @@ namespace Quiz
     class SubmissionParams
     {
         public const string studentNumberOne = "1000421 -  Joey van der Valk"; // This must be filled.
-        public const string studentNumberTwo = "XXXXXX - Mees van Zelst"; // This must be filled. Keep it "" if you are working alone.
+        public const string studentNumberTwo = "978218 - Mees van Zelst"; // This must be filled. Keep it "" if you are working alone.
         public const string classNumber = "INF2G"; // This must be filled. INF2A is just an example.
     }
 

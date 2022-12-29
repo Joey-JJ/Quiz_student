@@ -31,6 +31,7 @@ namespace ConcQuiz
     public class ConcStudent : Student
     {
         // todo: add required fields
+        object lockObj = new object();
 
         public ConcStudent(int num, string name) : base(num, name) { }
 
@@ -49,10 +50,14 @@ namespace ConcQuiz
         //     //todo: implement the body
         // }
 
-        // public override void ProposeAnswer()
-        // {
-        //     //todo: implement the body
-        // }
+        public override void ProposeAnswer()
+        {
+            //todo: implement the body
+            lock (lockObj)
+            {
+                base.ProposeAnswer();
+            }
+        }
 
         public override void Log(string logText = "")
         {
@@ -97,7 +102,6 @@ namespace ConcQuiz
     public class ConcExam : Exam
     {
         //todo: add required fields, if necessary
-        object lockObj = new object();
 
         public ConcExam(int number, string name = "") : base(number, name) { }
 
