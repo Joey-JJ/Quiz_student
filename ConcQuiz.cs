@@ -63,6 +63,8 @@ namespace ConcQuiz
     public class ConcTeacher : Teacher
     {
         //todo: add required fields, if necessary
+        // lockobj
+        object lockObj = new object();
 
         public ConcTeacher(string code, string name) : base(code, name) { }
 
@@ -74,10 +76,15 @@ namespace ConcQuiz
         // {
         //     //todo: implement the body
         // }
-        // public override void ProposeQuestion()
-        // {
-        //     //todo: implement the body
-        // }
+        public override void ProposeQuestion()
+        {
+            //todo: implement the body
+            lock (lockObj)
+            {
+                base.ProposeQuestion();
+            }
+
+        }
         // public override void PrepareExam(int maxNumOfQuestions)
         // {
         //     //todo: implement the body
@@ -90,13 +97,16 @@ namespace ConcQuiz
     public class ConcExam : Exam
     {
         //todo: add required fields, if necessary
+        object lockObj = new object();
 
         public ConcExam(int number, string name = "") : base(number, name) { }
 
-        // public override void AddQuestion(Teacher teacher, string text)
-        // {
-        //     //todo: implement the body
-        // }
+        public override void AddQuestion(Teacher teacher, string text)
+        {
+            //todo: implement the body
+            base.AddQuestion(teacher, text);
+
+        }
         public override void Log(string logText = "")
         {
             base.Log();
