@@ -18,14 +18,14 @@ namespace ConcQuiz
 
         public ConcQuestion(string txt, string tcode) : base(txt, tcode) { }
 
-        public override void AddAnswer(Answer a)
-        {
-            //todo: implement the body 
-            lock (lockObj)
-            {
-                this.Answers.AddLast(a);
-            }
-        }
+        // public override void AddAnswer(Answer a)
+        // {
+        //     //todo: implement the body 
+        //     lock (lockObj)
+        //     {
+        //         this.Answers.AddLast(a);
+        //     }
+        // }
     }
 
     public class ConcStudent : Student
@@ -50,14 +50,14 @@ namespace ConcQuiz
         //     //todo: implement the body
         // }
 
-        public override void ProposeAnswer()
-        {
-            //todo: implement the body
-            lock (lockObj)
-            {
-                base.ProposeAnswer();
-            }
-        }
+        // public override void ProposeAnswer()
+        // {
+        //     //todo: implement the body
+        //     lock (lockObj)
+        //     {
+        //         base.ProposeAnswer();
+        //     }
+        // }
 
         public override void Log(string logText = "")
         {
@@ -84,10 +84,10 @@ namespace ConcQuiz
         public override void ProposeQuestion()
         {
             //todo: implement the body
-            lock (lockObj)
-            {
-                base.ProposeQuestion();
-            }
+            // lock (lockObj)
+            // {
+            //     base.ProposeQuestion();
+            // }
 
         }
         // public override void PrepareExam(int maxNumOfQuestions)
