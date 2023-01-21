@@ -8,11 +8,7 @@ namespace ConcQuiz
 {
     public class ConcAnswer : Answer
     {
-        public ConcStudent ConcStudent;
-        public ConcAnswer(ConcStudent std, string txt = "") : base(std, txt)
-        {
-            this.ConcStudent = std;
-        }
+        public ConcAnswer(ConcStudent std, string txt = "") : base(std, txt) { }
     }
 
     public class ConcQuestion : Question
