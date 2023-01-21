@@ -22,12 +22,12 @@ namespace ConcQuiz
             this.ConcAnswers = new LinkedList<ConcAnswer>();
         }
 
-        public void AddAnswer(ConcAnswer a)
+        public override void AddAnswer(Answer a)
         {
             //todo: implement the body 
             lock (_lock)
             {
-                this.ConcAnswers.AddLast(a);
+                this.ConcAnswers.AddLast((ConcAnswer)a);
             }
         }
     }
@@ -40,10 +40,10 @@ namespace ConcQuiz
 
         public ConcStudent(int num, string name) : base(num, name) { }
 
-        public void AssignExam(ConcExam e)
+        public override void AssignExam(Exam e)
         {
             //todo: implement the body
-            this.ConcExam = e;
+            this.ConcExam = (ConcExam)e;
             this.Log("[Exam is Assigned]");
         }
 
