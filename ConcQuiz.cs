@@ -171,7 +171,7 @@ namespace ConcQuiz
 
         public new string ToString()
         {
-            string delim = " : ", nl = "\n";
+            string delim = " : ";
             return "Exam " + delim + this.Number.ToString() + delim + " Total Num Questions: " + this.QuestionNumber.ToString();
         }
 
