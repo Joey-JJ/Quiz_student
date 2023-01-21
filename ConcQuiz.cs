@@ -8,122 +8,193 @@ namespace ConcQuiz
 {
     public class ConcAnswer : Answer
     {
-        public ConcAnswer(ConcStudent std, string txt = "") : base(std, txt) { }
+        public ConcStudent ConcStudent;
+        public ConcAnswer(ConcStudent std, string txt = "") : base(std, txt)
+        {
+            this.ConcStudent = std;
+        }
     }
 
     public class ConcQuestion : Question
     {
         //todo: add required fields, if necessary
-        object lockObj = new object();
+        public LinkedList<ConcAnswer> ConcAnswers;
 
-        public ConcQuestion(string txt, string tcode) : base(txt, tcode) { }
+        public ConcQuestion(string txt, string tcode) : base(txt, tcode)
+        {
+            this.ConcAnswers = new LinkedList<ConcAnswer>();
+        }
 
-        // public override void AddAnswer(Answer a)
-        // {
-        //     //todo: implement the body 
-        //     lock (lockObj)
-        //     {
-        //         this.Answers.AddLast(a);
-        //     }
-        // }
+        public void AddAnswer(ConcAnswer a)
+        {
+            //todo: implement the body 
+            this.ConcAnswers.AddLast(a);
+        }
     }
 
     public class ConcStudent : Student
     {
         // todo: add required fields
-        object lockObj = new object();
+        public LinkedListNode<ConcQuestion>? ConcCurrent;
+        public ConcExam? ConcExam;
 
         public ConcStudent(int num, string name) : base(num, name) { }
 
-        // public override void AssignExam(Exam e)
-        // {
-        //     //todo: implement the body
-        // }
+        public void AssignExam(ConcExam e)
+        {
+            //todo: implement the body
+            this.ConcExam = e;
+            this.Log("[Exam is Assigned]");
+        }
 
-        // public override void StartExam()
-        // {
-        //     //todo: implement the body
-        // }
+        public override void StartExam()
+        {
+            //todo: implement the body
+            if (this.ConcExam is not null)
+            {
+                this.ConcCurrent = this.ConcExam.ConcQuestions.First;
+                for (int i = 0; i < this.ConcExam.ConcQuestions.Count; i++)
+                {
+                    this.Think();
+                    this.ProposeAnswer();
+                }
+            }
+        }
 
-        // public override void Think()
-        // {
-        //     //todo: implement the body
-        // }
+        public override void Think()
+        {
+            //todo: implement the body
+            Thread.Sleep(new Random().Next(FixedParams.minThinkingTimeStudent, FixedParams.maxThinkingTimeStudent));
+        }
 
-        // public override void ProposeAnswer()
-        // {
-        //     //todo: implement the body
-        //     lock (lockObj)
-        //     {
-        //         base.ProposeAnswer();
-        //     }
-        // }
+        public override void ProposeAnswer()
+        {
+            //todo: implement the body
+            if (this.ConcCurrent is not null)
+            {
+                this.Log("\n[Proposing Answer]\n");
+                // add your answer
+                this.ConcCurrent.Value.AddAnswer(new ConcAnswer(this));
+                // go for the next question
+                this.ConcCurrent = this.ConcCurrent.Next;
+                this.CurrentQuestionNumber++;
+            }
+        }
+
+        public new string ToString()
+        {
+            string delim = " : ", nl = "\n";
+            return "Student " + delim + this.Number.ToString() + nl + delim + this.ConcExam?.ToString() + delim + "Current Question: " + this.CurrentQuestionNumber.ToString();
+        }
 
         public override void Log(string logText = "")
         {
-            base.Log();
+            string nl = "\n";
+            Console.WriteLine(logText + nl + this.ToString());
         }
 
     }
     public class ConcTeacher : Teacher
     {
         //todo: add required fields, if necessary
-        // lockobj
-        object lockObj = new object();
+        public ConcExam? ConcExam;
 
         public ConcTeacher(string code, string name) : base(code, name) { }
 
-        // public override void AssignExam(Exam e)
-        // {
-        //     //todo: implement the body
-        // }
-        // public override void Think()
-        // {
-        //     //todo: implement the body
-        // }
+        public void AssignExam(ConcExam e)
+        {
+            //todo: implement the body
+            this.ConcExam = e;
+        }
+
+        public override void Think()
+        {
+            //todo: implement the body
+            Thread.Sleep(new Random().Next(FixedParams.minThinkingTimeTeacher, FixedParams.maxThinkingTimeTeacher));
+        }
+
         public override void ProposeQuestion()
         {
             //todo: implement the body
-            // lock (lockObj)
-            // {
-            //     base.ProposeQuestion();
-            // }
+            this.Log("[Proposing Question]");
 
+            string qtext = " [This is the text for Question] ";
+            if (this.ConcExam is not null)
+                this.ConcExam.AddQuestion(this, qtext);
         }
-        // public override void PrepareExam(int maxNumOfQuestions)
-        // {
-        //     //todo: implement the body
-        // }
+
+        public override void PrepareExam(int maxNumOfQuestions)
+        {
+            //todo: implement the body
+            for (int i = 0; i < maxNumOfQuestions; i++)
+            {
+                this.Think();
+                this.ProposeQuestion();
+            }
+        }
+
+        public new string ToString()
+        {
+            string delim = " : ", nl = "\n";
+            return "Teacher " + delim + this.Name + nl + " Code " + delim + this.Code;
+        }
+
+
         public override void Log(string logText = "")
         {
-            base.Log();
+            string nl = "\n";
+            Console.WriteLine(this.ToString() + nl + logText);
         }
     }
     public class ConcExam : Exam
     {
         //todo: add required fields, if necessary
+        public LinkedList<ConcQuestion> ConcQuestions;
+        private int Number;
+        private int QuestionNumber;
 
-        public ConcExam(int number, string name = "") : base(number, name) { }
+        public ConcExam(int number, string name = "") : base(number, name)
+        {
+            this.ConcQuestions = new LinkedList<ConcQuestion>();
+            this.QuestionNumber = 0;
+            this.Number = number;
+        }
 
-        public override void AddQuestion(Teacher teacher, string text)
+        public void AddQuestion(ConcTeacher teacher, string text)
         {
             //todo: implement the body
-            base.AddQuestion(teacher, text);
-
+            this.QuestionNumber++;
+            ConcQuestion q = new ConcQuestion(text, teacher.Code);
+            this.ConcQuestions.AddLast(q);
+            this.Log("[Question is added]" + q.ToString());
         }
+
+        public new string ToString()
+        {
+            string delim = " : ", nl = "\n";
+            return "Exam " + delim + this.Number.ToString() + delim + " Total Num Questions: " + this.QuestionNumber.ToString();
+        }
+
         public override void Log(string logText = "")
         {
-            base.Log();
+            string nl = "\n";
+            Console.WriteLine(this.ToString() + nl + logText);
         }
     }
 
     public class ConcClassroom : Classroom
     {
         //todo: add required fields, if necessary
+        public LinkedList<ConcStudent> ConcStudents;
+        public LinkedList<ConcTeacher> ConcTeachers;
+        public ConcExam ConcurrentExam { get; set; }
 
         public ConcClassroom(int examNumber = 1, string examName = "Programming") : base(examNumber, examName)
         {
             //todo: implement the body
+            this.ConcStudents = new LinkedList<ConcStudent>();
+            this.ConcTeachers = new LinkedList<ConcTeacher>();
+            this.ConcurrentExam = new ConcExam(examNumber, examName);
         }
 
         public override void SetUp()
@@ -135,7 +206,7 @@ namespace ConcQuiz
                 {
                     System.Console.WriteLine("Creating student");
                     string std_name = $"STUDENT NAME {i}"; //todo: to be generated later
-                    this.Students.AddLast(new Student(i + 1, std_name));
+                    this.ConcStudents.AddLast(new ConcStudent(i + 1, std_name));
                 }
             });
 
@@ -144,7 +215,7 @@ namespace ConcQuiz
                 for (int i = 0; i < FixedParams.maxNumOfTeachers; i++)
                 {
                     string teacher_name = $"TEACHER NAME {i}"; //todo: to be generated later
-                    this.Teachers.AddLast(new Teacher((i + 1).ToString(), teacher_name));
+                    this.ConcTeachers.AddLast(new ConcTeacher((i + 1).ToString(), teacher_name));
                 }
             });
 
@@ -154,15 +225,15 @@ namespace ConcQuiz
             // assign exams
             t1.Join();
             t2.Join();
-            foreach (Teacher t in this.Teachers)
-                t.AssignExam(this.Exam);
+            foreach (ConcTeacher t in this.ConcTeachers)
+                t.AssignExam(this.ConcurrentExam);
         }
 
         public override void PrepareExam(int maxNumOfQuestion)
         {
             //todo: implement the body
             List<Thread> threads = new List<Thread>();
-            foreach (Teacher t in this.Teachers)
+            foreach (ConcTeacher t in this.ConcTeachers)
             {
                 var x = new Thread(() => t.PrepareExam(maxNumOfQuestion));
                 x.Start();
@@ -172,16 +243,18 @@ namespace ConcQuiz
             threads.ForEach(x => x.Join());
         }
 
-        // public override void DistributeExam()
-        // {
-        //     //todo: implement the body
-        // }
+        public override void DistributeExam()
+        {
+            //todo: implement the body
+            foreach (ConcStudent s in this.ConcStudents)
+                s.AssignExam(this.ConcurrentExam);
+        }
 
         public override void StartExams()
         {
             //todo: implement the body
             List<Thread> threads = new List<Thread>();
-            foreach (Student s in this.Students)
+            foreach (ConcStudent s in this.ConcStudents)
             {
                 var t = new Thread(() => s.StartExam());
                 t.Start();
@@ -194,11 +267,11 @@ namespace ConcQuiz
         {
             string result = "", nl = "\n";
             int totalNumOfAnswers = 0;
-            foreach (Question q in this.Exam.Questions)
-                totalNumOfAnswers += q.Answers.Count;
-            result = "#Students: " + this.Students.Count.ToString() + nl +
-                "#Teachers: " + this.Teachers.Count.ToString() + nl +
-                "#Questions: " + this.Exam.Questions.Count.ToString() + nl +
+            foreach (ConcQuestion q in this.ConcurrentExam.ConcQuestions)
+                totalNumOfAnswers += q.ConcAnswers.Count;
+            result = "#Students: " + this.ConcStudents.Count.ToString() + nl +
+                "#Teachers: " + this.ConcTeachers.Count.ToString() + nl +
+                "#Questions: " + this.ConcurrentExam.ConcQuestions.Count.ToString() + nl +
                 "#Answers: " + totalNumOfAnswers.ToString();
             return result;
         }
