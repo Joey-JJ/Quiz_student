@@ -152,6 +152,9 @@ namespace ConcQuiz
         public LinkedList<ConcQuestion> ConcQuestions;
         private int Number;
         private int QuestionNumber;
+        // lock obj
+        private readonly object _lock = new object();
+
 
         public ConcExam(int number, string name = "") : base(number, name)
         {
@@ -163,10 +166,13 @@ namespace ConcQuiz
         public void AddQuestion(ConcTeacher teacher, string text)
         {
             //todo: implement the body
-            this.QuestionNumber++;
-            ConcQuestion q = new ConcQuestion(text, teacher.Code);
-            this.ConcQuestions.AddLast(q);
-            this.Log("[Question is added]" + q.ToString());
+            lock (_lock)
+            {
+                this.QuestionNumber++;
+                ConcQuestion q = new ConcQuestion(text, teacher.Code);
+                this.ConcQuestions.AddLast(q);
+                this.Log("[Question is added]" + q.ToString());
+            }
         }
 
         public new string ToString()
