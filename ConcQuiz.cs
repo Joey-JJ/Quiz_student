@@ -19,6 +19,7 @@ namespace ConcQuiz
     {
         //todo: add required fields, if necessary
         public LinkedList<ConcAnswer> ConcAnswers;
+        private readonly object _lock = new object();
 
         public ConcQuestion(string txt, string tcode) : base(txt, tcode)
         {
@@ -28,7 +29,10 @@ namespace ConcQuiz
         public void AddAnswer(ConcAnswer a)
         {
             //todo: implement the body 
-            this.ConcAnswers.AddLast(a);
+            lock (_lock)
+            {
+                this.ConcAnswers.AddLast(a);
+            }
         }
     }
 
